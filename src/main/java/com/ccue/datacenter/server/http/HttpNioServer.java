@@ -1,10 +1,14 @@
 package com.ccue.datacenter.server.http;
 
+import com.ccue.datacenter.server.http.handler.HttpHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +43,11 @@ public class HttpNioServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 此处添加handler
+
+                            socketChannel.pipeline().addLast("http-decoder",new HttpRequestDecoder());
+                            socketChannel.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65535));//将多个消息转化成一个
+                            socketChannel.pipeline().addLast("http-encoder",new HttpResponseEncoder());
+                            socketChannel.pipeline().addLast("http-server",new HttpHandler());
 
                         }
                     })
