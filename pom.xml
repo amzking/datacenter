@@ -10,38 +10,49 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
         <junit.version>4.11</junit.version>
-        <!--Jedis版本号 -->
         <jedis.version>2.9.0</jedis.version>
         <quartz.version>2.3.0</quartz.version>
+        <netty.version>4.1.31.Final</netty.version>
+        <jackson.version>2.9.7</jackson.version>
+
     </properties>
 
     <dependencies>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>${junit.version}</version>
-          <scope>test</scope>
-      </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-      <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-      <dependency>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-all</artifactId>
-          <version>4.1.31.Final</version>
-      </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 
-      <dependency>
-          <groupId>org.quartz-scheduler</groupId>
-          <artifactId>quartz</artifactId>
-          <version>${quartz.version}</version>
-      </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
     </dependencies>
+
     <build>
         <finalName>datacenter</finalName>
     </build>
+
 </project>
