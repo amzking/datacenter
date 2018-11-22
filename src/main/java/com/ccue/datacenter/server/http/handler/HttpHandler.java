@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 
 public class HttpHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
         try {
@@ -17,12 +18,15 @@ public class HttpHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             content.readBytes(bts);
             String result = null;
 
-            if(msg.method() == HttpMethod.GET) {
+            if (HttpMethod.GET.equals(msg.method())) {
                 String url = msg.uri();
                 result = "get method and paramters is "+ url.substring(url.indexOf("?")+1);
-            }else if(msg.method() == HttpMethod.POST) {
+                String relativePath = url.substring(url.indexOf("?" +1));
+
+            } else if (HttpMethod.POST.equals(msg.method())) {
                 result = "post method and paramters is "+ new String(bts);
             }
+
             FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             response.headers().set("content-Type","text/html;charset=UTF-8");
             StringBuilder sb = new StringBuilder();
