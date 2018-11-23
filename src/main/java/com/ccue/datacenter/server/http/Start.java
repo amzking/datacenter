@@ -1,8 +1,14 @@
 package com.ccue.datacenter.server.http;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Start {
 
+    private static Logger logger = LogManager.getLogger(Start.class);
+
     public static void main(String[] args) {
+        logger.error("test");
         HttpNioServer server = new HttpNioServer(8080);
         try {
             server.serve();
