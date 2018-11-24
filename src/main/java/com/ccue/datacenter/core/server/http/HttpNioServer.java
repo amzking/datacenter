@@ -1,6 +1,6 @@
-package com.ccue.datacenter.server.http;
+package com.ccue.datacenter.core.server.http;
 
-import com.ccue.datacenter.server.http.handler.HttpHandler;
+import com.ccue.datacenter.core.server.http.handler.HttpHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

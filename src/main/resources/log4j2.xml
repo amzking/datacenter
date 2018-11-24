@@ -5,6 +5,7 @@
         <Property name="fileName">datacenter.log</Property>
         <property name="logBaseFolder">/datacenter/logs</property>
         <Property name="backupFilePatch"></Property>
+        <property name="log_pattern">|%d{yyyy-MM-dd HH:mm:ss.SSS}|%t|${PORT}|${APPNAME}|%logger|%M|%p|%X{MDCCRT_GUID_TRACEID}|###+%X{MDCCRT_EXTENTS}-###|##+%X{MDCCRT_INPUT_PARAM}-##|##+%X{MDCCRT_OUTPUT_PARAM}-##|%X{MDCCRT_COST_TIME}|%m%n</property>
     </Properties>
     <!--先定义所有的appender-->
     <appenders>
