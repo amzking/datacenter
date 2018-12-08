@@ -1,6 +1,7 @@
 package com.ccue.datacenter.core.server.http;
 
-import com.ccue.datacenter.core.server.http.handler.HttpHandler;
+import com.ccue.datacenter.core.server.http.handler.HttpMessageHandler;
+import com.ccue.datacenter.init.NettyHttpServerInitListener;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
-public class HttpNioServer {
+public class HttpNioServer implements HttpServer {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpNioServer.class);
 
@@ -28,6 +29,7 @@ public class HttpNioServer {
     }
 
 
+    @Override
     public void serve() throws InterruptedException {
 
         EventLoopGroup listenGroup = new NioEventLoopGroup(1);
@@ -43,12 +45,10 @@ public class HttpNioServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 此处添加handler
-
                             socketChannel.pipeline().addLast("http-decoder",new HttpRequestDecoder());
                             socketChannel.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65535));//将多个消息转化成一个
                             socketChannel.pipeline().addLast("http-encoder",new HttpResponseEncoder());
-                            socketChannel.pipeline().addLast("http-server",new HttpHandler());
-
+                            socketChannel.pipeline().addLast("http-server",new HttpMessageHandler());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 1024)
@@ -56,15 +56,14 @@ public class HttpNioServer {
                     .option(ChannelOption.SO_RCVBUF, 65535);
 
             ChannelFuture future = bootstrap.bind(new InetSocketAddress(port)).sync();
-            future.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    if (channelFuture.isSuccess()) {
-                        System.out.println("Server is serving");
-                    } else {
-                        System.out.println("Server start failed");
-                        channelFuture.cause().printStackTrace();
-                    }
+            //应该从配置中获取NettyHttpServerInitListener
+            future.addListener(new NettyHttpServerInitListener());
+            future.addListener((ChannelFutureListener) channelFuture -> {
+                if (channelFuture.isSuccess()) {
+                    System.out.println("Server is serving");
+                } else {
+                    System.out.println("Server start failed");
+                    channelFuture.cause().printStackTrace();
                 }
             });
 

@@ -3,3 +3,8 @@
 /datacenter.iml
 
 /target
+.log
+datacenter.log
+
+/datacenter.log
+
