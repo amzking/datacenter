@@ -17,7 +17,7 @@ public class MongoDBClinet {
         MongoClientSettings settings = MongoClientSettings.builder()
                 .codecRegistry(pojoCodecRegistry)
                 .build();
-        MongoClient client = MongoClients.create("");
+        MongoClient client = MongoClients.create(settings);
         return client;
     }
 }
