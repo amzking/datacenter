@@ -3,6 +3,8 @@ package com.ccue.datacenter.core.server.http.handler;
 import com.ccue.datacenter.core.server.http.request.HttpIntercepterManager;
 import com.ccue.datacenter.core.server.http.request.HttpRequest;
 import com.ccue.datacenter.core.server.http.response.HttpResponse;
+import com.ccue.datacenter.core.server.http.url.router.IDispatcher;
+import com.ccue.datacenter.core.server.http.url.router.IHttpDispatcher;
 import com.ccue.datacenter.core.server.http.url.router.NettyHttpDispatcher;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
@@ -18,13 +20,20 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
      */
     private final boolean allowIntercept;
 
+    /**
+     * 请求分发，mvc 入口
+     */
+    private IHttpDispatcher dispatcher;
+
     public HttpMessageHandler() {
         // 默认不拦截
         this.allowIntercept = false;
+        this.dispatcher = new NettyHttpDispatcher();
     }
 
-    public HttpMessageHandler(boolean allowIntecept) {
+    public HttpMessageHandler(boolean allowIntecept, IHttpDispatcher dispatcher) {
         this.allowIntercept = allowIntecept;
+        this.dispatcher = dispatcher;
     }
 
 
@@ -38,7 +47,7 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }
         try {
-            response = new NettyHttpDispatcher().route(msg);
+            response = dispatcher.dispatch(msg);
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }catch (Exception e) {
             e.printStackTrace();

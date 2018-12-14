@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 请求调度器，路由至自己实现的mvc
  */
-public class NettyHttpDispatcher extends AbstractHttpDispatcher {
+public class NettyHttpDispatcher implements IHttpDispatcher {
 
     private static final String DEFAULT_Protocal = "HTTP";
 

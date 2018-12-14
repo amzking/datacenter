@@ -5,5 +5,5 @@ import io.netty.handler.codec.http.FullHttpResponse;
 
 
 
-public abstract class AbstractHttpDispatcher implements  IDispatcher<FullHttpRequest, FullHttpResponse>  {
+public interface IHttpDispatcher extends IDispatcher<FullHttpRequest, FullHttpResponse>  {
 }
