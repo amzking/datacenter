@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 相当于spring的dispatcherServlet
  */
-public class HttpServletUrlRouter extends HttpServlet implements UrlRouter<HttpServletRequest, HttpServletResponse> {
+public class HttpServletDispatcher extends HttpServlet implements IDispatcher<HttpServletRequest, HttpServletResponse> {
 
     public final void init() throws ServletException {
 

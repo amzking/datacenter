@@ -2,7 +2,7 @@ package com.ccue.datacenter.core.server.http.url.router;
 
 import com.ccue.datacenter.core.server.ServerContext;
 
-public interface UrlRouter<T, K> {
+public interface IDispatcher<T, K> {
 
 
     K route(T t);

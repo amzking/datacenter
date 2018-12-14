@@ -9,7 +9,7 @@ import io.netty.util.CharsetUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NettyHttpUrlRouter implements UrlRouter<FullHttpRequest, FullHttpResponse>{
+public class NettyHttpDispatcher implements IDispatcher<FullHttpRequest, FullHttpResponse> {
 
     private static final String DEFAULT_Protocal = "HTTP";
 

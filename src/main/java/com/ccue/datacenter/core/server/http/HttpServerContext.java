@@ -1,12 +1,12 @@
 package com.ccue.datacenter.core.server.http;
 
 import com.ccue.datacenter.core.server.ServerContext;
-import com.ccue.datacenter.core.server.http.url.router.UrlRouter;
+import com.ccue.datacenter.core.server.http.url.router.IDispatcher;
 
 public interface HttpServerContext extends ServerContext {
 
 
-    UrlRouter getUrlRouter();
+    IDispatcher getUrlRouter();
 
 
 }
