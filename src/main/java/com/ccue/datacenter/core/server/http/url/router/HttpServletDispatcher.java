@@ -17,7 +17,7 @@ public class HttpServletDispatcher extends HttpServlet implements IDispatcher<Ht
     }
 
     @Override
-    public HttpServletResponse route(HttpServletRequest httpServletRequest) {
+    public HttpServletResponse dispatch(HttpServletRequest httpServletRequest) {
 
 
         return null;

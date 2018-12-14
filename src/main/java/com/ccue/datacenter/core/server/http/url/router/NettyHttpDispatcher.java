@@ -9,7 +9,10 @@ import io.netty.util.CharsetUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NettyHttpDispatcher implements IDispatcher<FullHttpRequest, FullHttpResponse> {
+/**
+ * 请求调度器，路由至自己实现的mvc
+ */
+public class NettyHttpDispatcher extends AbstractHttpDispatcher {
 
     private static final String DEFAULT_Protocal = "HTTP";
 
@@ -19,7 +22,8 @@ public class NettyHttpDispatcher implements IDispatcher<FullHttpRequest, FullHtt
 
     private static final String HTTP_PARAM_PAIR_SEP = "=";
 
-    public FullHttpResponse route(FullHttpRequest request) {
+    @Override
+    public FullHttpResponse dispatch(FullHttpRequest request) {
 
         HttpMethod method = request.method();
         String url = request.uri();

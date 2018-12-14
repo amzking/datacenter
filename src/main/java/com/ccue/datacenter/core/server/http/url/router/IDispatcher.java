@@ -5,7 +5,7 @@ import com.ccue.datacenter.core.server.ServerContext;
 public interface IDispatcher<T, K> {
 
 
-    K route(T t);
+    K dispatch(T t);
 
     ServerContext getServerContext();
 
