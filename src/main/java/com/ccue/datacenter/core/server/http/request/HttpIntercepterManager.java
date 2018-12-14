@@ -31,7 +31,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         }
     }
 
-    public HttpIntercepterManager getInstance() {
+    public static HttpIntercepterManager getInstance() {
         return Holder.manager;
     }
 
