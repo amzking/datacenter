@@ -55,7 +55,7 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
 
-        if (allowIntercept && HttpIntercepterManager.getInstance().intercept(msg)) {
+        if (allowIntercept && !HttpIntercepterManager.getInstance().accept(msg)) {
             FullHttpResponse response = DEFAULT_INTERCEPT_RESPONSE;
             response.headers().set(CONTENT_TYPE, "application/xml");
             response.headers().setInt(CONTENT_LENGTH, response.content().readableBytes());

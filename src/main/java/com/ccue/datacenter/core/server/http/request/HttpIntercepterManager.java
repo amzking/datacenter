@@ -78,7 +78,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
      * @param request
      * @return
      */
-    public boolean intercept(FullHttpRequest request) {
+    public boolean accept(FullHttpRequest request) {
         boolean isAccept = true;
         AbstractHttpIntercepter intercepter = head;
         while (isAccept && !(intercepter instanceof TailHttpIntercepter)) {
