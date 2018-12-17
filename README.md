@@ -16,5 +16,4 @@ version-dev-2.0
   * 一个独立的HttpServer，可独立部署，可集成SpringMVC框架
   * 处理GET，POST，DELETE，OPTION
   * 可以处理媒体类型，提供对不同类型解析接口。
-  * 完整的，可扩展的返回类型码。
   * 异常管理

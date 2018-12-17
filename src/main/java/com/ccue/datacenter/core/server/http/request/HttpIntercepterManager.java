@@ -105,7 +105,6 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         public boolean accept(FullHttpRequest request) {
             return true;
         }
-
     }
 
     private class TailHttpIntercepter extends AbstractHttpIntercepter{
@@ -118,8 +117,6 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         public boolean accept(FullHttpRequest request) {
             return true;
         }
-
     }
-
 
 }
