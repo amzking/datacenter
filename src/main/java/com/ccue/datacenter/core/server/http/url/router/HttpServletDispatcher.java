@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 相当于spring的dispatcherServlet
+ *
+ * 适配MVC
+ *
+ * 支持 servlet
  */
 public class HttpServletDispatcher extends HttpServlet implements IHttpDispatcher {
 
