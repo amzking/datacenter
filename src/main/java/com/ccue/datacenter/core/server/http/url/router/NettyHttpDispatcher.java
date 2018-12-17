@@ -1,6 +1,8 @@
 package com.ccue.datacenter.core.server.http.url.router;
 
 import com.ccue.datacenter.core.server.http.HttpServerContext;
+import com.ccue.datacenter.core.server.http.request.HttpRequest;
+import com.ccue.datacenter.core.server.http.response.HttpResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
@@ -22,33 +24,29 @@ public class NettyHttpDispatcher implements IHttpDispatcher {
 
     private static final String HTTP_PARAM_PAIR_SEP = "=";
 
+    private static HttpGetRequestProcessor GetProcessor = null;
+
+    /**
+     * 弱引用，存在内存泄露的可能性？
+     */
+    private static final ThreadLocal<HttpGetRequestProcessor> GetProcessorThreadLocal = new ThreadLocal<HttpGetRequestProcessor>(){
+        @Override
+        protected HttpGetRequestProcessor initialValue() {
+            return GetProcessor;
+        }
+    };
+
     @Override
     public FullHttpResponse dispatch(FullHttpRequest request) {
 
         HttpMethod method = request.method();
-        String url = request.uri();
-        ByteBuf content = request.content();
-        byte[] bts = new byte[content.readableBytes()];
-        content.readBytes(bts);
-        String result = null;
+
 
         //得到参数封装并转发
         if (HttpMethod.GET.equals(method)) {
-            String paramStrs = null;
-            String relativePath = url;
-            if (url.indexOf(HTTP_URL_PARAMS_SEP) != -1) {
-                paramStrs = url.substring(url.indexOf(HTTP_URL_PARAMS_SEP) + 1);
-                relativePath = url.substring(0, url.indexOf(HTTP_URL_PARAMS_SEP));
-                Map<String, String> map = parseParameters(paramStrs);
 
-                // 根据路径、method寻找controoler
-                // httprequest的对象
-                HttpServerContext context = this.getServerContext();
-
-            }
         } else if (HttpMethod.POST.equals(request.method())) {
-            System.out.println("post:" + url);
-            result = "post method and paramters is "+ new String(bts);
+
         } else {
             // not support
         }
@@ -90,13 +88,43 @@ public class NettyHttpDispatcher implements IHttpDispatcher {
     }
 
 
-    private void doGet() {
+    private abstract class HttpRequestProcessor {
 
+        public abstract FullHttpResponse process(FullHttpRequest request);
     }
 
 
-    private void doPost() {
+    public class HttpGetRequestProcessor extends HttpRequestProcessor {
 
+        @Override
+        public FullHttpResponse process(FullHttpRequest request) {
+            String url = request.uri();
+            ByteBuf content = request.content();
+            byte[] bts = new byte[content.readableBytes()];
+            content.readBytes(bts);
+            String result = null;
+            String paramStrs = null;
+            String relativePath = url;
+            if (url.indexOf(HTTP_URL_PARAMS_SEP) != -1) {
+                paramStrs = url.substring(url.indexOf(HTTP_URL_PARAMS_SEP) + 1);
+                relativePath = url.substring(0, url.indexOf(HTTP_URL_PARAMS_SEP));
+                Map<String, String> map = parseParameters(paramStrs);
+
+                // 根据路径、method寻找controoler
+                // httprequest的对象
+                HttpServerContext context = NettyHttpDispatcher.this.getServerContext();
+
+            }
+            return null;
+        }
+    }
+
+    private class HttpPostRequestProcessor extends HttpRequestProcessor {
+
+        @Override
+        public FullHttpResponse process(FullHttpRequest request) {
+            return null;
+        }
     }
 
 }

@@ -60,27 +60,13 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
             response.headers().set(CONTENT_TYPE, "application/xml");
             response.headers().setInt(CONTENT_LENGTH, response.content().readableBytes());
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-        }
-        try {
-            FullHttpResponse response = dispatcher.dispatch(msg);
-            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private abstract class HttpRequestProcessor {
-
-        public abstract HttpResponse process(HttpRequest request);
-    }
-
-
-    private class HttpGetRequestProcessor extends HttpRequestProcessor {
-
-        @Override
-        public HttpResponse process(HttpRequest request) {
-            return null;
+        } else {
+            try {
+                FullHttpResponse response = dispatcher.dispatch(msg);
+                ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
