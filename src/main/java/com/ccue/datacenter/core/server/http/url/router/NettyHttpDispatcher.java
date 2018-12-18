@@ -88,7 +88,19 @@ public class NettyHttpDispatcher implements IHttpDispatcher {
     }
 
 
+    //getprocessor static
+    public static HttpRequestProcessor getRequestProcessor (){
+        /*HttpRequestProcessor session =  threadLocal.get();
+        //判断Session是否为空，如果为空，将创建一个session，并设置到本地线程变量中
+        try {
+        } finally {
+            threadLocal.remove();
+        }*/
+        return null;
+    }
+
     private abstract class HttpRequestProcessor {
+
 
         public abstract FullHttpResponse process(FullHttpRequest request);
     }

@@ -31,12 +31,12 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
     /**
      * 拦截时返回默认消息
      */
-    private static final String DEFAULT_INTERCEPT_MSG = "your request was intercepted!";
+    private static final String DEFAULT_INTERCEPT_MSG = "{\"code\":200, \"msg\":\"your request was intercepted!\"}";
 
     /**
      * 默认FullHtpResponse
      */
-    private FullHttpResponse DEFAULT_INTERCEPT_RESPONSE = new DefaultFullHttpResponse(
+    private static FullHttpResponse DEFAULT_INTERCEPT_RESPONSE = new DefaultFullHttpResponse(
             HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
             Unpooled.wrappedBuffer(DEFAULT_INTERCEPT_MSG.getBytes()));
 
@@ -57,7 +57,7 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
         if (allowIntercept && !HttpIntercepterManager.getInstance().accept(msg)) {
             FullHttpResponse response = DEFAULT_INTERCEPT_RESPONSE;
-            response.headers().set(CONTENT_TYPE, "application/xml");
+            response.headers().set(CONTENT_TYPE, "application/json");
             response.headers().setInt(CONTENT_LENGTH, response.content().readableBytes());
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         } else {
