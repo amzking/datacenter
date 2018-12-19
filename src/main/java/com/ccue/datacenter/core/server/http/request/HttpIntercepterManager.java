@@ -51,7 +51,6 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         return false;
     }
 
-
     /**
      * 默认添加至最后
      * @param intercepter
@@ -122,6 +121,16 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         }
     }
 
+
+    public void remove(String intercepterName) {
+        AbstractHttpIntercepter intercepter = cacheMap.get(intercepterName);
+        if (intercepter != null) {
+            AbstractHttpIntercepter prev = intercepter.prev();
+            AbstractHttpIntercepter next = intercepter.next();
+            addAfter(prev, next);
+        }
+    }
+
     /**
      * 不要加太多interceper，性能会变差
      * @param request
@@ -142,7 +151,6 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
     public Iterator<AbstractHttpIntercepter> iterator() {
         return this.cacheMap.values().iterator();
     }
-
 
     private class HeadHttpIntercepter extends AbstractHttpIntercepter {
         public HeadHttpIntercepter(HttpIntercepterManager holder) {
