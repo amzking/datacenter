@@ -35,8 +35,16 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         return Holder.manager;
     }
 
-    private boolean registCheck(AbstractHttpIntercepter intercepter) {
-        if (intercepter != null && cacheMap.size() < DEFAULT_INETERCEPTER_MAX) {
+    /**
+     * 加入链式结构前的校验
+     * 1. not null
+     * 2. 不超过最大长度
+     * 3. 非重复添加
+     * @param intercepter
+     * @return
+     */
+    private boolean registChecked(AbstractHttpIntercepter intercepter) {
+        if (intercepter != null && cacheMap.size() < DEFAULT_INETERCEPTER_MAX && !cacheMap.containsKey(intercepter.getIntercepterName())) {
             cacheMap.putIfAbsent(intercepter.getIntercepterName(), intercepter);
             return true;
         }
@@ -49,19 +57,60 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
      * @param intercepter
      */
     public void regist(AbstractHttpIntercepter intercepter) {
-        if (registCheck(intercepter)) {
-            AbstractHttpIntercepter theLast = tail.prev();
-            theLast.setNext(intercepter);
-            intercepter.setPrev(theLast);
-            intercepter.setNext(tail);
-            tail.setPrev(intercepter);
+        if (registChecked(intercepter)) {
+            addBefore(tail, intercepter);
         } else {
-            logger.error("Intercepter 拦截器链已超过最大长度");
+            logger.error("Intercepter 拦截器链已超过最大长度，未成功添加");
         }
     }
 
+    public void addBefore(String intercepterNameBefore, AbstractHttpIntercepter current) throws Exception {
+        AbstractHttpIntercepter before = cacheMap.get(intercepterNameBefore);
+        addBefore(before, current);
+    }
+
+    public void addAfter(String intercepterNameAfter, AbstractHttpIntercepter current) throws Exception {
+        AbstractHttpIntercepter after = cacheMap.get(intercepterNameAfter);
+        addAfter(current, after);
+    }
+
+    /**
+     * 添加至指定拦截器前
+     * @param before
+     * @param current
+     */
+    public void addBefore(AbstractHttpIntercepter before, AbstractHttpIntercepter current) {
+        if (before != null && registChecked(current)) {
+            AbstractHttpIntercepter prev = before.prev();
+            prev.setNext(current);
+            current.setPrev(prev);
+            current.setNext(before);
+            before.setPrev(current);
+        }
+    }
+
+    /**
+     * 添加至指定拦截器后
+     * @param after
+     * @param current
+     */
+    public void addAfter(AbstractHttpIntercepter after, AbstractHttpIntercepter current) {
+        if (after != null && registChecked(current)) {
+            AbstractHttpIntercepter next = after.next();
+            after.setNext(current);
+            current.setPrev(after);
+            next.setPrev(current);
+            current.setNext(next);
+        }
+    }
+
+
+    /**
+     * 添加至第一个
+     * @param intercepter
+     */
     public void addFirst(AbstractHttpIntercepter intercepter) {
-        if (registCheck(intercepter)) {
+        if (registChecked(intercepter)) {
             AbstractHttpIntercepter oldFirst = head.next();
             head.setNext(intercepter);
             intercepter.setPrev(head);
@@ -96,11 +145,9 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
 
     private class HeadHttpIntercepter extends AbstractHttpIntercepter {
-
         public HeadHttpIntercepter(HttpIntercepterManager holder) {
             super(holder);
         }
-
         @Override
         public boolean accept(FullHttpRequest request) {
             return true;
@@ -108,11 +155,9 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
     }
 
     private class TailHttpIntercepter extends AbstractHttpIntercepter{
-
         public TailHttpIntercepter(HttpIntercepterManager holder) {
             super(holder);
         }
-
         @Override
         public boolean accept(FullHttpRequest request) {
             return true;
