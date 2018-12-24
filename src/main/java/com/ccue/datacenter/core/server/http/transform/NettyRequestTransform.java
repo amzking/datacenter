@@ -1,6 +1,5 @@
-package com.ccue.datacenter.core.server.http.request;
+package com.ccue.datacenter.core.server.http.transform;
 
-import com.ccue.datacenter.core.server.http.base.ITransform;
 import io.netty.handler.codec.http.FullHttpRequest;
 
 public interface NettyRequestTransform<T> extends ITransform<FullHttpRequest, T> {
