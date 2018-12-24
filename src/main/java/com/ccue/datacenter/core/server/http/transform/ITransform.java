@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.server.http.base;
+package com.ccue.datacenter.core.server.http.transform;
 
 public interface ITransform<T, K> {
 
