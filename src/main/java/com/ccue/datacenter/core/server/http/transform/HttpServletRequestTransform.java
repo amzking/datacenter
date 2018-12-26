@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class HttpServletRequestTransform implements NettyRequestTransform<HttpServletRequest> {
 
+
     @Override
-    public HttpServletRequest transform(FullHttpRequest fullHttpRequest) {
+    public HttpServletRequest transform(FullHttpRequest defaultFullHttpRequest) {
         return null;
     }
 }

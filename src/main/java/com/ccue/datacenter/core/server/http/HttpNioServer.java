@@ -1,6 +1,8 @@
 package com.ccue.datacenter.core.server.http;
 
 import com.ccue.datacenter.core.server.http.handler.HttpMessageHandler;
+import com.ccue.datacenter.core.server.http.url.dispatch.IDispatcher;
+import com.ccue.datacenter.core.server.http.url.dispatch.NettyHttpDispatcher;
 import com.ccue.datacenter.init.NettyHttpServerInitListener;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -24,13 +26,27 @@ public class HttpNioServer implements HttpServer {
      */
     private final int port;
 
+    /**
+     * Server 上下文
+     */
+    private IDispatcher dispatcher;
+
     public HttpNioServer (int port) {
         this.port = port;
+        dispatcher = new NettyHttpDispatcher();
+    }
+
+    public HttpNioServer (int port, IDispatcher dispatcher) {
+        this.port = port;
+        this.dispatcher = dispatcher;
     }
 
 
     @Override
     public void serve() throws InterruptedException {
+
+        // 首先应读取配置，判断是哪种mvc
+        dispatcher.initServerContext();
 
         EventLoopGroup listenGroup = new NioEventLoopGroup(1);
         // 默认为线程数的两倍
@@ -57,7 +73,6 @@ public class HttpNioServer implements HttpServer {
 
             ChannelFuture future = bootstrap.bind(new InetSocketAddress(port)).sync();
             //应该从配置中获取NettyHttpServerInitListener
-            future.addListener(new NettyHttpServerInitListener());
             future.addListener((ChannelFutureListener) channelFuture -> {
                 if (channelFuture.isSuccess()) {
                     System.out.println("Server is serving");
@@ -67,6 +82,7 @@ public class HttpNioServer implements HttpServer {
                 }
             });
 
+            future.addListener(new NettyHttpServerInitListener());
             future.channel().closeFuture().sync();
 
         } finally {

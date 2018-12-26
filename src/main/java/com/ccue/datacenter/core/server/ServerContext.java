@@ -1,6 +1,6 @@
 package com.ccue.datacenter.core.server;
 
-public interface ServerContext {
+public interface ServerContext<K, T> {
 
-    String getServerType();
+    void init();
 }

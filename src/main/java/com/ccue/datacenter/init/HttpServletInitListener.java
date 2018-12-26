@@ -1,15 +1,16 @@
 package com.ccue.datacenter.init;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
  * 兼容tomcat等servlet容器
  */
-public class HttpServletInitListener extends HttpServerContextLoader implements ServletContextListener {
+public class HttpServletInitListener implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
-        initContext();
+        //initContext();
 
     }
 

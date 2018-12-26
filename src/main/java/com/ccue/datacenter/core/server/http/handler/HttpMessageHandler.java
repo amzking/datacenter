@@ -1,10 +1,8 @@
 package com.ccue.datacenter.core.server.http.handler;
 
 import com.ccue.datacenter.core.server.http.request.HttpIntercepterManager;
-import com.ccue.datacenter.core.server.http.request.HttpRequest;
-import com.ccue.datacenter.core.server.http.response.HttpResponse;
-import com.ccue.datacenter.core.server.http.url.router.IHttpDispatcher;
-import com.ccue.datacenter.core.server.http.url.router.NettyHttpDispatcher;
+import com.ccue.datacenter.core.server.http.url.dispatch.IHttpDispatcher;
+import com.ccue.datacenter.core.server.http.url.dispatch.NettyHttpDispatcher;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
@@ -19,26 +17,29 @@ import static io.netty.handler.codec.rtsp.RtspHeaderNames.CONTENT_LENGTH;
 public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     /**
-     * 是否开启对请求对拦截
-     */
-    private final boolean allowIntercept;
-
-    /**
-     * 请求分发，mvc 入口
-     */
-    private IHttpDispatcher dispatcher;
-
-    /**
      * 拦截时返回默认消息
      */
     private static final String DEFAULT_INTERCEPT_MSG = "{\"code\":200, \"msg\":\"your request was intercepted!\"}";
-
     /**
      * 默认FullHtpResponse
      */
-    private static FullHttpResponse DEFAULT_INTERCEPT_RESPONSE = new DefaultFullHttpResponse(
+    public static FullHttpResponse DEFAULT_INTERCEPT_RESPONSE = new DefaultFullHttpResponse(
             HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
             Unpooled.wrappedBuffer(DEFAULT_INTERCEPT_MSG.getBytes()));
+
+    static {
+        DEFAULT_INTERCEPT_RESPONSE.headers().set(CONTENT_TYPE, "application/json");
+        DEFAULT_INTERCEPT_RESPONSE.headers().setInt(CONTENT_LENGTH, DEFAULT_INTERCEPT_RESPONSE.content().readableBytes());
+    }
+
+    /**
+     * 是否开启对请求对拦截
+     */
+    private final boolean allowIntercept;
+    /**
+     * 请求分发，mvc 入口, 持有一个HttpServerContext
+     */
+    private IHttpDispatcher dispatcher;
 
     public HttpMessageHandler() {
         // 默认不拦截
@@ -51,20 +52,18 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
         this.dispatcher = dispatcher;
     }
 
-
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
 
         if (allowIntercept && !HttpIntercepterManager.getInstance().accept(msg)) {
             FullHttpResponse response = DEFAULT_INTERCEPT_RESPONSE;
-            response.headers().set(CONTENT_TYPE, "application/json");
-            response.headers().setInt(CONTENT_LENGTH, response.content().readableBytes());
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         } else {
             try {
+                // 请求转至控制器
                 FullHttpResponse response = dispatcher.dispatch(msg);
                 ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

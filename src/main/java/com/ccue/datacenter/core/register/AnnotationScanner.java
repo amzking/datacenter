@@ -1,6 +1,5 @@
 package com.ccue.datacenter.core.register;
 
-import com.ccue.datacenter.core.server.http.url.router.Router;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+@Deprecated
 public class AnnotationScanner {
 
     public static List<Class<?>> getClassesByAnnotation(String packageName, Class<? extends Annotation> clazz) {
@@ -78,11 +78,5 @@ public class AnnotationScanner {
 
     }
 
-    public static void main(String[] args) {
-        List<Class<?>> list = getClassesByAnnotation("com.ccue.datacenter.business", Router.class);
-        for (Class c : list) {
-            System.out.println(c.getSimpleName());
-        }
-    }
 }
 
