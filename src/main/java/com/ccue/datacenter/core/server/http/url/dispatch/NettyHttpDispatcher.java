@@ -1,5 +1,6 @@
 package com.ccue.datacenter.core.server.http.url.dispatch;
 
+import com.ccue.datacenter.core.server.http.DefaultNettyHttpServerContext;
 import com.ccue.datacenter.core.server.http.HttpServerContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -27,6 +28,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
     private static final String HTTP_PARAM_SEP = "&";
 
     private static final String HTTP_PARAM_PAIR_SEP = "=";
+
 
 
     /**
@@ -69,14 +71,29 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
     @Override
     public void initServerContext() {
         if (this.httpServerContext == null) {
-            HttpServerContext serverContext = createHttpServerContext();
-            serverContext.init();
+            httpServerContext = createHttpServerContext();
+            httpServerContext.init();
         }
+        initMappingHandler(httpServerContext);
+        initRouter(httpServerContext);
+        //initRender(httpServerContext);
+    }
+
+    private void initRouter(HttpServerContext httpServerContext) {
 
     }
 
+    private void initMappingHandler(HttpServerContext httpServerContext) {
+
+    }
+
+    /**
+     * 创建默认的上下文
+     * 后期若要考虑独立mvc和server，拆分为WebApplictionContext 和 ServerContext
+     * @return
+     */
     private HttpServerContext createHttpServerContext() {
-        return null;
+        return new DefaultNettyHttpServerContext();
     }
 
     /**

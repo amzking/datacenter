@@ -5,6 +5,8 @@ package com.ccue.datacenter.core.server.http;
  */
 public class DefaultNettyHttpServerContext implements HttpServerContext {
 
+    private ContextLoader loader;
+
     @Override
     public void init() {
 
