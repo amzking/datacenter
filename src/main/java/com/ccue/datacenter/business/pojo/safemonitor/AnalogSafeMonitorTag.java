@@ -15,12 +15,20 @@ public class AnalogSafeMonitorTag extends AbstractTag {
 
     private final String lowerValueLimit;
 
+    private final String upperAlarmLimit;
+
+    private final String lowerAlarmLimit;
+
 
     public static class Builder extends AbstractTag.Builder<Builder> {
 
         private String upperValueLimit;
 
         private String lowerValueLimit;
+
+        private String upperAlarmLimit;
+
+        private String lowerAlarmLimit;
 
         @Override
         AbstractTag build() {
@@ -37,6 +45,16 @@ public class AnalogSafeMonitorTag extends AbstractTag {
             return this;
         }
 
+        public Builder upperAlarmLimit(String upperAlarmLimit) {
+            this.upperAlarmLimit = upperAlarmLimit;
+            return this;
+        }
+
+        public Builder lowerAlarmLimit(String lowerAlarmLimit) {
+            this.lowerAlarmLimit = lowerAlarmLimit;
+            return this;
+        }
+
         @Override
         protected Builder self() {
             return this;
@@ -47,5 +65,7 @@ public class AnalogSafeMonitorTag extends AbstractTag {
         super(builder);
         this.upperValueLimit = builder.upperValueLimit;
         this.lowerValueLimit = builder.lowerValueLimit;
+        this.upperAlarmLimit = builder.upperAlarmLimit;
+        this.lowerAlarmLimit = builder.lowerAlarmLimit;
     }
 }
