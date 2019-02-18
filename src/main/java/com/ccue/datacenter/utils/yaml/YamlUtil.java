@@ -44,7 +44,7 @@ public class YamlUtil {
     }
 
     public <T> T readAs(Class<T> clazz) {
-        T res = yaml.<T>loadAs(path, clazz);
+        T res = yaml.<T>loadAs(this.getClass().getClassLoader().getResourceAsStream(path), clazz);
         return res;
     }
 
