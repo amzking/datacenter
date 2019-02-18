@@ -1,6 +1,16 @@
-mongo:
-    servers:
-      -
-        host: 127.0.0.1
-        port: 27017
+userName: zk
+password: pwd
+servers:
+  - host: 127.0.0.1
+    port: 27017
+  - host: 127.0.0.1
+    port: 27018
+maintenanceFrequency: 99
+maintenanceInitialDelay: 99
+maxConnectionIdleTime: 99
+maxConnectionLifeTime: 99
+maxSize: 99
+minSize: 99
+maxWaitQueueSize: 99
+maxWaitTime: 99
 

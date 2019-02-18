@@ -1,6 +1,5 @@
 package com.ccue.datacenter.core.db.mongo;
 
-import com.ccue.datacenter.core.db.DatabaseContext;
 
 import java.util.List;
 
@@ -32,14 +31,5 @@ public class MongoDBContext extends AbstractDatabaseContext {
         clusters = builder.clusters;
     }
 
-    public class MongoRepica {
-        private String host;
-        private String port;
-
-        MongoRepica(String host, String port) {
-            this.host = host;
-            this.port = port;
-        }
-    }
 
 }
