@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class MongoDBContext extends AbstractDatabaseContext {
 
+    public MongoDBConfig getConfig() {
+        return config;
+    }
+
     private final MongoDBConfig config;
 
     /**
@@ -24,7 +28,7 @@ public class MongoDBContext extends AbstractDatabaseContext {
         MongoDBClinetHolder.initContext();
     }
 
-    public static class Builder extends AbstractDatabaseContext.Builder<Builder> {
+    public static class Loader extends AbstractDatabaseContext.Loader<Loader> {
         private MongoDBConfig config;
 
         private String DEFALT_PROPERTIES = "mongo.yaml";
@@ -35,7 +39,7 @@ public class MongoDBContext extends AbstractDatabaseContext {
          * @param configFile
          * @return: com.ccue.datacenter.core.db.mongo.MongoDBContext.Builder
          */
-        public Builder loadConfig(String configFile) {
+        public Loader configFile(String configFile) {
             if (configFile == null) {
                 configFile = DEFALT_PROPERTIES;
             }
@@ -44,19 +48,25 @@ public class MongoDBContext extends AbstractDatabaseContext {
             return this;
         }
 
-        public MongoDBContext build() {
+        public MongoDBContext load() {
             return new MongoDBContext(this);
         }
         @Override
-        protected Builder self() {
+        protected Loader self() {
             return this;
         }
     }
 
-    MongoDBContext(Builder builder) {
-        super(builder);
-        config = builder.config;
+    MongoDBContext(Loader loader) {
+        super(loader);
+        config = loader.config;
     }
+
+
+    public Integer getMaintenanceFrequency() {
+        return config.getMaintenanceFrequency();
+    }
+
 
 
 }

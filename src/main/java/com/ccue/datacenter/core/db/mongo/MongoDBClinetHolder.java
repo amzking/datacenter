@@ -20,6 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 
+/**
+ * @description: 此类应该是一个单例类
+ * @since: 2019-02-20
+ * @param
+ * @return:
+ */
 public class MongoDBClinetHolder {
 
     private static Logger logger = LogManager.getLogger(MongoDBClinetHolder.class);
@@ -33,17 +39,16 @@ public class MongoDBClinetHolder {
 
     private byte[] lock = new byte[8];
 
-    private static MongoCredential credential = null;
-    private static CodecRegistry pojoCodecRegistry = null;
-    private static Block<ClusterSettings.Builder> hosts = null;
-    private static MongoClientSettings settings = null;
+    private static MongoClientSettings settings;
 
     public static void initContext() {
         // 获取用户名密码
-        credential = MongoCredential.createCredential(null, null, null);
-        pojoCodecRegistry = CodecRegistries.fromRegistries(null,
+        MongoDBContext context = new MongoDBContext.Loader().configFile(null).load();
+
+        MongoCredential credential = MongoCredential.createCredential(null, null, null);
+        CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(null,
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-        hosts = builder ->
+        Block<ClusterSettings.Builder> hosts = builder ->
                 builder.hosts(Arrays.asList(new ServerAddress("host1", 27017)));
         settings = MongoClientSettings.builder()
                 .credential(credential)

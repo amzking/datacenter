@@ -4,56 +4,46 @@ import com.ccue.datacenter.core.db.DatabaseContext;
 
 public abstract class AbstractDatabaseContext implements DatabaseContext {
 
-    final String userName;
+    private final String userName;
 
-    final String password;
+    private final String password;
 
-    final String dbName;
+    private final String dbName;
 
-    abstract static class Builder<T extends Builder<T>> {
+    protected abstract static class Loader<T extends Loader<T>> {
 
-        String userName;
+        private String userName;
 
-        String password;
+        private String password;
 
-        String dbName;
+        private String dbName;
 
-        public T userName(String userName) {
+        private T userName(String userName) {
             userName = userName;
             return self();
         }
 
-        public T password(String password) {
+        private T password(String password) {
             password = password;
             return self();
         }
 
-        public T dbName(String dbName) {
+        private T dbName(String dbName) {
             dbName = dbName;
             return self();
         }
-        abstract AbstractDatabaseContext build();
+        abstract AbstractDatabaseContext load();
         protected abstract T self();
     }
 
-    AbstractDatabaseContext(Builder<?>  builder) {
-        userName = builder.userName;
-        password = builder.password;
-        dbName = builder.dbName;
+    AbstractDatabaseContext(Loader<?>  loader) {
+        userName = loader.userName;
+        password = loader.password;
+        dbName = loader.dbName;
     }
 
-    @Override
-    public String getUserName() {
-        return this.userName;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
     public String getDBName() {
         return this.dbName;
     }
+
 }
