@@ -1,5 +1,6 @@
 package com.ccue.datacenter.core.db.mongo;
 
+import com.ccue.datacenter.core.db.mongo.monitor.MongoConnectionListener;
 import com.mongodb.Block;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
@@ -8,7 +9,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.connection.ClusterSettings;
 import com.mongodb.connection.ConnectionPoolSettings;
-import com.mongodb.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -30,7 +30,6 @@ public class MongoDBClinetHolder {
 
     private static Logger logger = LogManager.getLogger(MongoDBClinetHolder.class);
 
-
     /**
      * @description: 在获取前应该先初始化
      * @since: 2019-02-18
@@ -43,9 +42,9 @@ public class MongoDBClinetHolder {
 
     public static void initContext() {
         // 获取用户名密码
-        MongoDBContext context = new MongoDBContext.Loader().configFile(null).load();
+        MongoDBContext context = new MongoDBContext.Loader().load();
 
-        MongoCredential credential = MongoCredential.createCredential(null, null, null);
+        MongoCredential credential = MongoCredential.createCredential(context.getUserName(), context.getDbName(), context.getPassword().toCharArray());
         CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(null,
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         Block<ClusterSettings.Builder> hosts = builder ->
@@ -57,14 +56,13 @@ public class MongoDBClinetHolder {
                     @Override
                     public void apply(ConnectionPoolSettings.Builder builder) {
                         builder.addConnectionPoolListener(new MongoConnectionListener())
-                                .maintenanceFrequency(555, TimeUnit.MILLISECONDS)
-                                .maintenanceInitialDelay(555, TimeUnit.MILLISECONDS)
-                                .maxConnectionIdleTime(555, TimeUnit.MILLISECONDS)
-                                .maxConnectionLifeTime(555, TimeUnit.MILLISECONDS)
-                                .maxSize(555)
-                                .minSize(10)
-                                .maxWaitQueueSize(555)
-                                .maxWaitTime(555, TimeUnit.MILLISECONDS)
+                                .maintenanceFrequency(context.getMaintenanceFrequency(), TimeUnit.MILLISECONDS)
+                                .maintenanceInitialDelay(context.getMaintenanceInitialDelay(), TimeUnit.MILLISECONDS)
+                                .maxConnectionIdleTime(context.getMaxConnectionIdleTime(), TimeUnit.MILLISECONDS)
+                                .maxConnectionLifeTime(context.getMaxConnectionLifeTime(), TimeUnit.MILLISECONDS)
+                                .maxSize(context.getMaxSize())
+                                .maxWaitQueueSize(context.getMaxWaitQueueSize())
+                                .maxWaitTime(context.getMaxWaitTime(), TimeUnit.MILLISECONDS)
                                 .build();
                     }
                 })
@@ -73,11 +71,10 @@ public class MongoDBClinetHolder {
     }
 
 
-
     /**
+     * @param
      * @description: 获取mongodbclient
      * @since: 2019-02-18
-     * @param
      * @return: com.mongodb.client.MongoClient
      */
     public MongoClient getClient() {
@@ -90,42 +87,6 @@ public class MongoDBClinetHolder {
             }
         }
         return client;
-    }
-
-    /**
-     * mongoDB 连接池监听
-     */
-    private static class MongoConnectionListener extends ConnectionPoolListenerAdapter {
-
-        @Override
-        public void connectionCheckedOut(ConnectionCheckedOutEvent connectionCheckedOutEvent) {
-            logger.debug("get a connection");
-        }
-
-        @Override
-        public void connectionCheckedIn(ConnectionCheckedInEvent connectionCheckedInEvent) {
-            logger.debug("return a connection");
-        }
-
-        @Override
-        public void waitQueueEntered(ConnectionPoolWaitQueueEnteredEvent connectionPoolWaitQueueEnteredEvent) {
-            logger.debug("放入等待队列中，等待新连接。。。。。。。。。。。。。。。。。。。。。。");
-        }
-
-        @Override
-        public void waitQueueExited(ConnectionPoolWaitQueueExitedEvent connectionPoolWaitQueueExitedEvent) {
-            logger.debug("从等待队列中移除");
-        }
-
-        @Override
-        public void connectionAdded(ConnectionAddedEvent connectionAddedEvent) {
-
-        }
-
-        @Override
-        public void connectionRemoved(ConnectionRemovedEvent connectionRemovedEvent) {
-
-        }
     }
 
 }

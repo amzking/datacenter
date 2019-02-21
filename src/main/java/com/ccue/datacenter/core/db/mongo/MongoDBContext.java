@@ -11,10 +11,6 @@ import java.util.List;
  */
 public class MongoDBContext extends AbstractDatabaseContext {
 
-    public MongoDBConfig getConfig() {
-        return config;
-    }
-
     private final MongoDBConfig config;
 
     /**
@@ -34,21 +30,18 @@ public class MongoDBContext extends AbstractDatabaseContext {
         private String DEFALT_PROPERTIES = "mongo.yaml";
 
         /**
-         * @description:若不提供默认配置路径，则加载默认文件
+         * @description:若不提供默认配置路径，则加载默认文件,确保最后调用
          * @since: 2019-02-20
-         * @param configFile
+         * @param
          * @return: com.ccue.datacenter.core.db.mongo.MongoDBContext.Builder
          */
-        public Loader configFile(String configFile) {
+        public MongoDBContext load() {
+            String configFile = this.getConfigFile();
             if (configFile == null) {
                 configFile = DEFALT_PROPERTIES;
             }
-            MongoDBConfig config = new YamlUtil.Reader().path("mongo.yaml").load().readAs(MongoDBConfig.class);
+            MongoDBConfig config = new YamlUtil.Reader().path(configFile).load().readAs(MongoDBConfig.class);
             this.config = config;
-            return this;
-        }
-
-        public MongoDBContext load() {
             return new MongoDBContext(this);
         }
         @Override
@@ -62,11 +55,53 @@ public class MongoDBContext extends AbstractDatabaseContext {
         config = loader.config;
     }
 
+    public String getUserName() {
+        return config.getUserName();
+    }
+
+
+    public String getPassword() {
+        return config.getPassword();
+    }
+
+    public String getDbName() {
+        return config.getDbName();
+    }
+
+    public List<MongoRepica> getServers() {
+        return config.getServers();
+    }
 
     public Integer getMaintenanceFrequency() {
         return config.getMaintenanceFrequency();
     }
 
+    public Integer getMaintenanceInitialDelay() {
+        return config.getMaintenanceInitialDelay();
+    }
 
+    public Integer getMaxConnectionIdleTime() {
+        return config.getMaxConnectionIdleTime();
+    }
+
+    public Integer getMaxConnectionLifeTime() {
+        return config.getMaxConnectionLifeTime();
+    }
+
+    public Integer getMaxSize() {
+        return config.getMaxSize();
+    }
+
+    public Integer getMinSize() {
+        return config.getMinSize();
+    }
+
+    public Integer getMaxWaitQueueSize() {
+        return config.getMaxWaitQueueSize();
+    }
+
+    public Integer getMaxWaitTime() {
+        return config.getMaxWaitTime();
+    }
 
 }

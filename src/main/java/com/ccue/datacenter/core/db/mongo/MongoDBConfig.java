@@ -13,6 +13,8 @@ public class MongoDBConfig {
 
     private String password;
 
+    private String dbName;
+
     private List<MongoRepica> servers;
 
     private Integer maintenanceFrequency;
@@ -45,6 +47,14 @@ public class MongoDBConfig {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
     }
 
     public List<MongoRepica> getServers() {
