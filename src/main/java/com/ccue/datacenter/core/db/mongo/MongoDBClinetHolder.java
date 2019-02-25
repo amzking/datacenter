@@ -15,7 +15,8 @@ import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -34,21 +35,28 @@ public class MongoDBClinetHolder {
      * @description: 在获取前应该先初始化
      * @since: 2019-02-18
      */
-    private MongoClient client = null;
-
-    private byte[] lock = new byte[8];
+    private static MongoClient client = null;
 
     private static MongoClientSettings settings;
 
-    public static void initContext() {
+    protected static void initContext() {
         // 获取用户名密码
         MongoDBContext context = new MongoDBContext.Loader().load();
 
         MongoCredential credential = MongoCredential.createCredential(context.getUserName(), context.getDbName(), context.getPassword().toCharArray());
         CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(null,
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+
+        List<MongoRepica> servers = context.getServers() == null ? new ArrayList<>(1) : context.getServers();
+        List<ServerAddress> serverAddresses = new ArrayList<>();
+        if (servers.size() == 0) {
+            servers.add(new MongoRepica("127.0.0.1", 27017));
+        }
+        for (MongoRepica repica : servers) {
+            serverAddresses.add(new ServerAddress(repica.getHost(), repica.getPort()));
+        }
         Block<ClusterSettings.Builder> hosts = builder ->
-                builder.hosts(Arrays.asList(new ServerAddress("host1", 27017)));
+                builder.hosts(serverAddresses);
         settings = MongoClientSettings.builder()
                 .credential(credential)
                 .codecRegistry(pojoCodecRegistry)
@@ -61,6 +69,7 @@ public class MongoDBClinetHolder {
                                 .maxConnectionIdleTime(context.getMaxConnectionIdleTime(), TimeUnit.MILLISECONDS)
                                 .maxConnectionLifeTime(context.getMaxConnectionLifeTime(), TimeUnit.MILLISECONDS)
                                 .maxSize(context.getMaxSize())
+                                .minSize(context.getMinSize())
                                 .maxWaitQueueSize(context.getMaxWaitQueueSize())
                                 .maxWaitTime(context.getMaxWaitTime(), TimeUnit.MILLISECONDS)
                                 .build();
@@ -77,9 +86,9 @@ public class MongoDBClinetHolder {
      * @since: 2019-02-18
      * @return: com.mongodb.client.MongoClient
      */
-    public MongoClient getClient() {
+    public static MongoClient getClient() {
         if (client == null) {
-            synchronized (lock) {
+            synchronized (MongoDBClinetHolder.class) {
                 if (client == null) {
                     initContext();
                     client = MongoClients.create(settings);
