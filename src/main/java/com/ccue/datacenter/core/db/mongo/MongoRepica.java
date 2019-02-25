@@ -6,8 +6,12 @@ package com.ccue.datacenter.core.db.mongo;
  * @date 2019-02-18
  */
 public class MongoRepica {
+
     private String host;
+
     private Integer port;
+
+    public MongoRepica() {};
 
     public MongoRepica(String host, Integer port) {
         this.host = host;
