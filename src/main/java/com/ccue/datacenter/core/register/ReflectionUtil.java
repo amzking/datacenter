@@ -1,7 +1,5 @@
 package com.ccue.datacenter.core.register;
 
-import com.ccue.datacenter.core.mapping.Mapping;
-import com.ccue.datacenter.core.mapping.RouterBean;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.SubTypesScanner;
@@ -28,6 +26,7 @@ public class ReflectionUtil {
 
     /**
      * 获取带有注解的方法
+     *
      * @param anno
      * @return
      */
@@ -38,6 +37,7 @@ public class ReflectionUtil {
 
     /**
      * 获取集合类中带有特定注解的方法
+     *
      * @param classList
      * @param anno
      * @return
@@ -53,6 +53,7 @@ public class ReflectionUtil {
 
     /**
      * 获取一个类带有注解的所有方法
+     *
      * @param clazz
      * @param anno
      * @return
@@ -73,6 +74,7 @@ public class ReflectionUtil {
 
     /**
      * 获取带有注解的类
+     *
      * @param anno
      * @return
      */
@@ -80,8 +82,6 @@ public class ReflectionUtil {
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(anno);
         return classes;
     }
-
-
 
 
 }

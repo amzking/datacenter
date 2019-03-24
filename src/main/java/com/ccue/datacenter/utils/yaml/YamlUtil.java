@@ -1,6 +1,7 @@
 package com.ccue.datacenter.utils.yaml;
 
 import org.yaml.snakeyaml.Yaml;
+
 import java.util.Map;
 
 /**
@@ -29,10 +30,12 @@ public class YamlUtil {
     public static class Reader {
         private String path = DEFAULT_PATH;
         private Yaml yaml = new Yaml();
+
         public Reader path(String path) {
             this.path = path;
             return this;
         }
+
         public YamlUtil load() {
             return new YamlUtil(this);
         }
@@ -49,10 +52,10 @@ public class YamlUtil {
     }
 
     /**
+     * @param reader
      * @description:
      * @since: 2019-01-07
-     * @param reader
-     * @return: 
+     * @return:
      */
     private YamlUtil(Reader reader) {
         path = reader.path;

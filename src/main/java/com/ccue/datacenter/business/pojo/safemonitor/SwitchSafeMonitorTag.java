@@ -7,8 +7,6 @@ package com.ccue.datacenter.business.pojo.safemonitor;
  */
 public class SwitchSafeMonitorTag extends AbstractTag {
 
-    
-
 
     SwitchSafeMonitorTag(Builder<?> builder) {
         super(builder);

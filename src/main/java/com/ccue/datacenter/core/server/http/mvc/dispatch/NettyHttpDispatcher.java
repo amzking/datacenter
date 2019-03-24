@@ -29,7 +29,6 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
     private static final String HTTP_PARAM_PAIR_SEP = "=";
 
 
-
     /**
      * 拦截时返回默认消息
      */
@@ -38,6 +37,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
     public static FullHttpResponse DEFAULT_NOT_SUPPORT_RESPONSE = new DefaultFullHttpResponse(
             HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
             Unpooled.wrappedBuffer(DEFAULT_NOT_SUPPORT_MSG.getBytes()));
+
     static {
         DEFAULT_NOT_SUPPORT_RESPONSE.headers().set(CONTENT_TYPE, "application/json");
         DEFAULT_NOT_SUPPORT_RESPONSE.headers().setInt(CONTENT_LENGTH, DEFAULT_NOT_SUPPORT_RESPONSE.content().readableBytes());
@@ -54,7 +54,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
             return response;
         } else if (HttpMethod.POST.equals(request.method())) {
             response = doPost(request);
-        } else if (HttpMethod.PUT.equals(request.method())){
+        } else if (HttpMethod.PUT.equals(request.method())) {
             // not supported
             response = doPut(request);
         } else if (HttpMethod.HEAD.equals(request.method())) {
@@ -74,6 +74,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
 
     /**
      * 处理Get请求
+     *
      * @param request
      * @return
      */
@@ -89,7 +90,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
             map = parseParameters(reqParams);
         }
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        response.headers().set("content-Type","text/html;charset=UTF-8");
+        response.headers().set("content-Type", "text/html;charset=UTF-8");
         StringBuilder sb = new StringBuilder();
         response.setStatus(null);
         sb.append("abc");
@@ -104,6 +105,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
 
     /**
      * 解析Http中GET方法中的路径参数
+     *
      * @param paramStrs
      * @return
      */
@@ -123,6 +125,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
 
     /**
      * 处理Post请求
+     *
      * @param request
      * @return
      */
@@ -132,6 +135,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
 
     /**
      * 处理Put请求
+     *
      * @param request
      * @return
      */
@@ -141,6 +145,7 @@ public class NettyHttpDispatcher extends AbstractHttpDispatcher {
 
     /**
      * 处理Head请求
+     *
      * @param request
      * @return
      */

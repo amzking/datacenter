@@ -20,5 +20,4 @@ public interface MongoBaseService<T> {
     void upsertAll(List<T> list);
 
 
-
 }

@@ -5,6 +5,6 @@ import com.ccue.datacenter.core.server.http.mvc.dispatch.IDispatcher;
 
 public interface HttpServerContext<K, T> extends ServerContext {
 
-    IDispatcher<K, T>  getDispatcher();
+    IDispatcher<K, T> getDispatcher();
 
 }

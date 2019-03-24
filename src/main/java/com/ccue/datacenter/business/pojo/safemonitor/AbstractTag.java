@@ -88,10 +88,11 @@ public abstract class AbstractTag {
         }
 
         abstract AbstractTag build();
+
         protected abstract T self();
     }
 
-    AbstractTag(Builder<?> builder){
+    AbstractTag(Builder<?> builder) {
         this.id = builder.id;
         this.tagNum = builder.tagNum;
         this.tagName = builder.tagName;

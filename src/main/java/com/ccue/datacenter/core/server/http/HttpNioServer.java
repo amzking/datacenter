@@ -29,12 +29,12 @@ public class HttpNioServer implements HttpServer {
      */
     private HttpServerContext context;
 
-    public HttpNioServer (int port) {
+    public HttpNioServer(int port) {
         this.port = port;
         context = new DefaultNettyHttpServerContext();
     }
 
-    public HttpNioServer (int port, HttpServerContext context) {
+    public HttpNioServer(int port, HttpServerContext context) {
         this.port = port;
         this.context = context;
     }
@@ -55,14 +55,14 @@ public class HttpNioServer implements HttpServer {
 
             bootstrap.group(listenGroup, processGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>(){
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 此处添加handler
-                            socketChannel.pipeline().addLast("http-decoder",new HttpRequestDecoder());
-                            socketChannel.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65535));//将多个消息转化成一个
-                            socketChannel.pipeline().addLast("http-encoder",new HttpResponseEncoder());
-                            socketChannel.pipeline().addLast("http-server",new HttpMessageHandler(true, context));
+                            socketChannel.pipeline().addLast("http-decoder", new HttpRequestDecoder());
+                            socketChannel.pipeline().addLast("http-aggregator", new HttpObjectAggregator(65535));//将多个消息转化成一个
+                            socketChannel.pipeline().addLast("http-encoder", new HttpResponseEncoder());
+                            socketChannel.pipeline().addLast("http-server", new HttpMessageHandler(true, context));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 1024)

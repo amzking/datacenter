@@ -1,8 +1,8 @@
 package com.ccue.datacenter.core.server.http.mvc.dispatch;
 
-import com.ccue.datacenter.core.server.http.servlet.DefaultHttpServletResponse;
 import com.ccue.datacenter.core.server.http.mvc.transform.HttpServletRequestTransform;
 import com.ccue.datacenter.core.server.http.mvc.transform.HttpServletResponseTransform;
+import com.ccue.datacenter.core.server.http.servlet.DefaultHttpServletResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
@@ -14,9 +14,9 @@ import java.io.IOException;
 
 /**
  * 适配spring的dispatcherServlet
- *
+ * <p>
  * 适配MVC
- *
+ * <p>
  * 支持 servlet
  */
 public class HttpServletDispatcher extends AbstractHttpDispatcher {
@@ -34,6 +34,7 @@ public class HttpServletDispatcher extends AbstractHttpDispatcher {
 
     /**
      * 需要将netty的request 转为 httpServletRequest
+     *
      * @param fullHttpRequest
      * @return
      */

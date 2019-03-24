@@ -1,6 +1,5 @@
 package com.ccue.datacenter.init;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 

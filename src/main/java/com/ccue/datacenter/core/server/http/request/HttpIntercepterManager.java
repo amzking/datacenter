@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -26,6 +25,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
     private static class Holder {
         private static HttpIntercepterManager manager = new HttpIntercepterManager();
+
         static {
             logger.info("HttpIntercepterManager Singleton was Created");
         }
@@ -40,6 +40,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
      * 1. not null
      * 2. 不超过最大长度
      * 3. 非重复添加
+     *
      * @param intercepter
      * @return
      */
@@ -53,6 +54,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
     /**
      * 默认添加至最后
+     *
      * @param intercepter
      */
     public void regist(AbstractHttpIntercepter intercepter) {
@@ -75,6 +77,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
     /**
      * 添加至指定拦截器前
+     *
      * @param before
      * @param current
      */
@@ -90,6 +93,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
     /**
      * 添加至指定拦截器后
+     *
      * @param after
      * @param current
      */
@@ -106,6 +110,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
     /**
      * 添加至第一个
+     *
      * @param intercepter
      */
     public void addFirst(AbstractHttpIntercepter intercepter) {
@@ -133,6 +138,7 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
 
     /**
      * 不要加太多interceper，性能会变差
+     *
      * @param request
      * @return
      */
@@ -156,16 +162,18 @@ public class HttpIntercepterManager implements Iterable<AbstractHttpIntercepter>
         public HeadHttpIntercepter(HttpIntercepterManager holder) {
             super(holder);
         }
+
         @Override
         public boolean accept(FullHttpRequest request) {
             return true;
         }
     }
 
-    private class TailHttpIntercepter extends AbstractHttpIntercepter{
+    private class TailHttpIntercepter extends AbstractHttpIntercepter {
         public TailHttpIntercepter(HttpIntercepterManager holder) {
             super(holder);
         }
+
         @Override
         public boolean accept(FullHttpRequest request) {
             return true;

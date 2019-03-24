@@ -11,7 +11,10 @@ public class MongoRepica {
 
     private Integer port;
 
-    public MongoRepica() {};
+    public MongoRepica() {
+    }
+
+    ;
 
     public MongoRepica(String host, Integer port) {
         this.host = host;

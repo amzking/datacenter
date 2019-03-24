@@ -2,7 +2,6 @@ package com.ccue.datacenter.core.db.mongo;
 
 
 import com.ccue.datacenter.utils.yaml.YamlUtil;
-import com.mongodb.ServerAddress;
 
 import java.util.List;
 
@@ -15,9 +14,9 @@ public class MongoDBContext extends AbstractDatabaseContext {
     private final MongoDBConfig config;
 
     /**
+     * @param
      * @description: 加载配置上下文
      * @since: 2019-02-20
-     * @param
      * @return: void
      */
     @Override
@@ -31,9 +30,9 @@ public class MongoDBContext extends AbstractDatabaseContext {
         private String DEFALT_PROPERTIES = "mongo.yaml";
 
         /**
+         * @param
          * @description:若不提供默认配置路径，则加载默认文件,确保最后调用
          * @since: 2019-02-20
-         * @param
          * @return: com.ccue.datacenter.core.db.mongo.MongoDBContext.Builder
          */
         public MongoDBContext load() {
@@ -45,6 +44,7 @@ public class MongoDBContext extends AbstractDatabaseContext {
             this.config = config;
             return new MongoDBContext(this);
         }
+
         @Override
         protected Loader self() {
             return this;

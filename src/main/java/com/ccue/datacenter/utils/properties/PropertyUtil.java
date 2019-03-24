@@ -1,6 +1,8 @@
 package com.ccue.datacenter.utils.properties;
 
-import org.apache.commons.configuration2.*;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
@@ -12,7 +14,8 @@ public class PropertyUtil {
 
     private final static String DEFAULT_PROPERTY = "config.properties";
 
-    private PropertyUtil() {}
+    private PropertyUtil() {
+    }
 
     private static Configuration configuration;
 
@@ -45,7 +48,7 @@ public class PropertyUtil {
     }
 
     public int getInt(String key, int defaultValue) {
-        return configuration.getInt(key,defaultValue);
+        return configuration.getInt(key, defaultValue);
     }
 
     public String getString(String key, String defaultStr) {

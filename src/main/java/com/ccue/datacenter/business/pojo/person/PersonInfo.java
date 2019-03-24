@@ -40,7 +40,7 @@ public class PersonInfo {
 
         public Builder id(String id) {
             this.id = id;
-            return  this;
+            return this;
         }
 
         public Builder mineNum(String mineNum) {

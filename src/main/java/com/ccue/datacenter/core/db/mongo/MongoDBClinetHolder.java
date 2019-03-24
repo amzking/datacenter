@@ -22,9 +22,9 @@ import java.util.concurrent.TimeUnit;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 
 /**
+ * @param
  * @description: 此类应该是一个单例类
  * @since: 2019-02-20
- * @param
  * @return:
  */
 public class MongoDBClinetHolder {

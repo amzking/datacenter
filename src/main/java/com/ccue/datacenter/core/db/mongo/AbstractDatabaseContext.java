@@ -16,6 +16,7 @@ public abstract class AbstractDatabaseContext implements DatabaseContext {
         }
 
         abstract AbstractDatabaseContext load();
+
         protected abstract T self();
 
         protected String getConfigFile() {
@@ -23,7 +24,7 @@ public abstract class AbstractDatabaseContext implements DatabaseContext {
         }
     }
 
-    AbstractDatabaseContext(Loader<?>  loader) {
+    AbstractDatabaseContext(Loader<?> loader) {
         configFile = loader.configFile;
     }
 

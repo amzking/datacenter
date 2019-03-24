@@ -1,7 +1,5 @@
 package com.ccue.datacenter.core.db.mongo;
 
-import com.mongodb.ServerAddress;
-
 import java.util.List;
 
 /**

@@ -14,6 +14,7 @@ public @interface Mapping {
     /**
      * 默认为根路径
      * 以/开头，若无则补全
+     *
      * @return
      */
     String value() default "/";
