@@ -1,8 +1,6 @@
 package com.ccue.datacenter.core.server.http;
 
 import com.ccue.datacenter.core.server.http.handler.HttpMessageHandler;
-import com.ccue.datacenter.core.server.http.url.dispatch.IDispatcher;
-import com.ccue.datacenter.core.server.http.url.dispatch.NettyHttpDispatcher;
 import com.ccue.datacenter.init.NettyHttpServerInitListener;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -29,24 +27,24 @@ public class HttpNioServer implements HttpServer {
     /**
      * Server 上下文
      */
-    private IDispatcher dispatcher;
+    private HttpServerContext context;
 
     public HttpNioServer (int port) {
         this.port = port;
-        dispatcher = new NettyHttpDispatcher();
+        context = new DefaultNettyHttpServerContext();
     }
 
-    public HttpNioServer (int port, IDispatcher dispatcher) {
+    public HttpNioServer (int port, HttpServerContext context) {
         this.port = port;
-        this.dispatcher = dispatcher;
+        this.context = context;
     }
 
 
     @Override
     public void serve() throws InterruptedException {
 
-        // 首先应读取配置，判断是哪种mvc
-        dispatcher.initServerContext();
+        // 初始化上下文
+        context.init();
 
         EventLoopGroup listenGroup = new NioEventLoopGroup(1);
         // 默认为线程数的两倍
@@ -64,7 +62,7 @@ public class HttpNioServer implements HttpServer {
                             socketChannel.pipeline().addLast("http-decoder",new HttpRequestDecoder());
                             socketChannel.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65535));//将多个消息转化成一个
                             socketChannel.pipeline().addLast("http-encoder",new HttpResponseEncoder());
-                            socketChannel.pipeline().addLast("http-server",new HttpMessageHandler());
+                            socketChannel.pipeline().addLast("http-server",new HttpMessageHandler(true, context));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 1024)

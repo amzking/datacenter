@@ -1,8 +1,8 @@
-package com.ccue.datacenter.core.server.http.url.dispatch;
+package com.ccue.datacenter.core.server.http.mvc.dispatch;
 
 import com.ccue.datacenter.core.server.http.servlet.DefaultHttpServletResponse;
-import com.ccue.datacenter.core.server.http.transform.HttpServletRequestTransform;
-import com.ccue.datacenter.core.server.http.transform.HttpServletResponseTransform;
+import com.ccue.datacenter.core.server.http.mvc.transform.HttpServletRequestTransform;
+import com.ccue.datacenter.core.server.http.mvc.transform.HttpServletResponseTransform;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
@@ -51,21 +51,6 @@ public class HttpServletDispatcher extends AbstractHttpDispatcher {
         }
         FullHttpResponse fullHttpResponse = responseTransform.transform(response);
         return fullHttpResponse;
-    }
-
-    @Override
-    public void initServerContext() {
-        this.httpServerContext.init();
-        /*XmlWebApplicationContext mvcContext = new XmlWebApplicationContext();
-        mvcContext.setConfigLocation("classpath:spring-servlet.xml");
-        mvcContext.setParent(ctx);
-        MockServletConfig servletConfig = new ServletConfig(mvcContext.getServletContext(), "dispatcherServlet");
-        servlet = new DispatcherServlet(mvcContext);
-        try {
-            servlet.init(servletConfig);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }*/
     }
 
 }

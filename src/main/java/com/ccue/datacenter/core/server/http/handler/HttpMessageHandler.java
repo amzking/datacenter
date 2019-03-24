@@ -1,8 +1,8 @@
 package com.ccue.datacenter.core.server.http.handler;
 
+import com.ccue.datacenter.core.server.http.DefaultNettyHttpServerContext;
+import com.ccue.datacenter.core.server.http.HttpServerContext;
 import com.ccue.datacenter.core.server.http.request.HttpIntercepterManager;
-import com.ccue.datacenter.core.server.http.url.dispatch.IHttpDispatcher;
-import com.ccue.datacenter.core.server.http.url.dispatch.NettyHttpDispatcher;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
@@ -39,17 +39,17 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
     /**
      * 请求分发，mvc 入口, 持有一个HttpServerContext
      */
-    private IHttpDispatcher dispatcher;
+    private HttpServerContext context;
 
     public HttpMessageHandler() {
         // 默认不拦截
         this.allowIntercept = false;
-        this.dispatcher = new NettyHttpDispatcher();
+        this.context = new DefaultNettyHttpServerContext();
     }
 
-    public HttpMessageHandler(boolean allowIntercept, IHttpDispatcher dispatcher) {
+    public HttpMessageHandler(boolean allowIntercept, HttpServerContext context) {
         this.allowIntercept = allowIntercept;
-        this.dispatcher = dispatcher;
+        this.context = context;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
         } else {
             try {
                 // 请求转至控制器
-                FullHttpResponse response = dispatcher.dispatch(msg);
+                FullHttpResponse response = context.getDispatcher().dispatch(msg);
                 ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
             } catch (Exception e) {
                 e.printStackTrace();

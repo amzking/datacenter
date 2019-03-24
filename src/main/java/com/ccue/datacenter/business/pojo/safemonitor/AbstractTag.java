@@ -100,5 +100,4 @@ public abstract class AbstractTag {
         this.stationNum = builder.stationNum;
     }
 
-
 }
