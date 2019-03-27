@@ -2,6 +2,7 @@ package com.ccue.datacenter.utils.yaml;
 
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -11,16 +12,21 @@ import java.util.Map;
  */
 public class YamlUtil {
     /**
-     * The default path when a path was not offered.
+     * @author joking@aliyun.com
+     * @description:The default path when a path was not offered.
+     * @since: 2019-03-2
      */
     private static final String DEFAULT_PATH = "config.yaml";
 
     /**
-     * offer a way to change the path
+     * @author joking@aliyun.com
+     * @description: offer a way to change the path, once settled, should't change, avoid muliti-IO
+     * @since: 2019-03-2
      */
-    private final String path;
+    private final InputStream inputStream;
 
     /**
+     * @author joking@aliyun.com
      * @description: yaml
      * @since: 2019-01-07
      */
@@ -28,11 +34,11 @@ public class YamlUtil {
 
 
     public static class Reader {
-        private String path = DEFAULT_PATH;
         private Yaml yaml = new Yaml();
+        private InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(DEFAULT_PATH);
 
         public Reader path(String path) {
-            this.path = path;
+            this.inputStream = this.getClass().getClassLoader().getResourceAsStream(path);
             return this;
         }
 
@@ -42,12 +48,12 @@ public class YamlUtil {
     }
 
     public Map read() {
-        Map map = yaml.<Map>load(this.getClass().getClassLoader().getResourceAsStream(path));
+        Map map = yaml.<Map>load(this.inputStream);
         return map;
     }
 
     public <T> T readAs(Class<T> clazz) {
-        T res = yaml.<T>loadAs(this.getClass().getClassLoader().getResourceAsStream(path), clazz);
+        T res = yaml.<T>loadAs(this.inputStream, clazz);
         return res;
     }
 
@@ -58,7 +64,7 @@ public class YamlUtil {
      * @return:
      */
     private YamlUtil(Reader reader) {
-        path = reader.path;
+        inputStream = reader.inputStream;
         yaml = reader.yaml;
     }
 

@@ -39,7 +39,7 @@ public class HttpMessageHandler extends SimpleChannelInboundHandler<FullHttpRequ
     /**
      * 请求分发，mvc 入口, 持有一个HttpServerContext
      */
-    private HttpServerContext context;
+    private HttpServerContext<FullHttpRequest, FullHttpResponse> context;
 
     public HttpMessageHandler() {
         // 默认不拦截

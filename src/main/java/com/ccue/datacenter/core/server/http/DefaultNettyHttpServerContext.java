@@ -14,7 +14,7 @@ public class DefaultNettyHttpServerContext implements HttpServerContext<FullHttp
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultNettyHttpServerContext.class);
 
-    private IDispatcher dispatcher;
+    private IDispatcher<FullHttpRequest, FullHttpResponse> dispatcher;
 
     /**
      * @description: 加载server 相关的配置文件
