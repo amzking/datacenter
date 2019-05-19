@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.mapping;
+package com.ccue.datacenter.core.mvc.mapping;
 
 import java.util.Map;
 

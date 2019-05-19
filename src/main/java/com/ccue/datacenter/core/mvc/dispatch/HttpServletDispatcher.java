@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.server.http.mvc.dispatch;
+package com.ccue.datacenter.core.mvc.dispatch;
 
 import com.ccue.datacenter.core.server.http.mvc.transform.HttpServletRequestTransform;
 import com.ccue.datacenter.core.server.http.mvc.transform.HttpServletResponseTransform;

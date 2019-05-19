@@ -1,7 +1,7 @@
 package com.ccue.datacenter.business.router;
 
-import com.ccue.datacenter.core.mapping.Mapping;
-import com.ccue.datacenter.core.mapping.Router;
+import com.ccue.datacenter.core.mvc.annotation.Mapping;
+import com.ccue.datacenter.core.mvc.annotation.Router;
 import com.ccue.datacenter.core.server.http.request.HttpRequestMethod;
 
 @Router

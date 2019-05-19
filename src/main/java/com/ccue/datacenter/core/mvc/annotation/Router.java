@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.mapping;
+package com.ccue.datacenter.core.mvc.annotation;
 
 
 import java.lang.annotation.ElementType;

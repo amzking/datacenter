@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.server.http.mvc.dispatch;
+package com.ccue.datacenter.core.mvc.dispatch;
 
 public interface IDispatcher<T, K> {
 

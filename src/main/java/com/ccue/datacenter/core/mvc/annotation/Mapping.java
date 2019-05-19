@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.mapping;
+package com.ccue.datacenter.core.mvc.annotation;
 
 import com.ccue.datacenter.core.server.http.request.HttpRequestMethod;
 
