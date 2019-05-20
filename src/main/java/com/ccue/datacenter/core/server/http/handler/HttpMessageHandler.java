@@ -1,8 +1,8 @@
 package com.ccue.datacenter.core.server.http.handler;
 
+import com.ccue.datacenter.core.mvc.http.HttpIntercepterManager;
 import com.ccue.datacenter.core.server.http.DefaultNettyHttpServerContext;
 import com.ccue.datacenter.core.server.http.HttpServerContext;
-import com.ccue.datacenter.core.server.http.request.HttpIntercepterManager;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;

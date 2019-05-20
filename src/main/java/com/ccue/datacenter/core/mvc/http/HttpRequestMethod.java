@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.server.http.request;
+package com.ccue.datacenter.core.mvc.http;
 
 public enum HttpRequestMethod {
 

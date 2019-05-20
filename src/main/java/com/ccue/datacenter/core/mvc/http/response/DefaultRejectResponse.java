@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.server.http.response;
+package com.ccue.datacenter.core.mvc.http.response;
 
 public class DefaultRejectResponse {
 

@@ -1,4 +1,4 @@
-package com.ccue.datacenter.core.server.http.request;
+package com.ccue.datacenter.core.mvc.http;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 import org.slf4j.Logger;
