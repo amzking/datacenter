@@ -18,7 +18,7 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <yaml.version>1.23</yaml.version>
         <jedis.version>2.9.0</jedis.version>
-        <quartz.version>2.3.0</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <reflection.verson>0.9.11</reflection.verson>
         <netty.version>4.1.31.Final</netty.version>
         <jackson.version>2.9.7</jackson.version>
